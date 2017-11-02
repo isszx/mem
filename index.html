@@ -39,29 +39,49 @@
             animation: outliner 7s infinite;
   }
   @-webkit-keyframes outliner {
-      0% {
-        stroke-dasharray: 1000;
-        stroke-dashoffset: 1000;
-        stroke-width: 0;
-      }
-      50% {
-        stroke-dashoffset: 0;
-        stroke-dasharray: 100;
-        stroke-width: 0.2;
-      }
-      100% {
-        stroke-dasharray: 1000;
-        stroke-dashoffset: 1000;
-        stroke-width: 0;
-      }
+    0% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-width: 0;
+    }
+    25% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 100;
+      stroke-width: 0.2;
+    }
+    50% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-width: 0;
+    }
+    75% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 100;
+      stroke-width: 0.2;
+    }
+    100% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-width: 0;
+    }
   }
   @keyframes outliner {
     0% {
       stroke-dasharray: 1000;
       stroke-dashoffset: 1000;
       stroke-width: 0;
-      }
+    }
+    25% {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 100;
+      stroke-width: 0.2;
+    }
     50% {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      stroke-width: 0;
+    }
+    75% {
       stroke-dashoffset: 0;
       stroke-dasharray: 100;
       stroke-width: 0.2;
