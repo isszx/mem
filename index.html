@@ -241,7 +241,7 @@
         this.name = name;
 
         setTimeout(() => {
-          fetch(`/data/${name}.json`)
+          fetch(`data/${name}.json`)
             .then(response => response.json())
             .then(body => body.audio)
             .then(audio => {
