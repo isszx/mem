@@ -513,7 +513,7 @@
       <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
     </section>
     <nav :class="ui.menu">
-      <header>Memory v0.0.3</header>
+      <header>Memory v0.0.4</header>
       <button :class="calcClass('an')" @click="load('an')">
         <span>An</span>
         <small>13/04/17 2:15am</small>
@@ -538,7 +538,7 @@
     <section class="audio-list" v-if="page.length > 0">
       <div class="column">
         <!-- <a class="link" @click.prevent="testSearch(item)" v-for="(item, index) in page" target="_blank" v-bind:href="hrefMake(item)"> -->
-        <a class="link" v-for="(item, index) in page" target="_blank" v-bind:href="hrefMake(item)">
+        <a class="link" v-for="(item, index) in page" @click="openSong(item)">
           <span>{{ index + 1 + current }} - {{ item }}</span>
         </a>
       </div>
@@ -584,6 +584,39 @@
     },
     mounted() {},
     methods: {
+      openSong(item) {
+        this.copyTextToClipboard(item);
+        if (window.open) {
+          window.open(this.hrefMake(item), '_blank');
+        }
+      },
+      fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          const successful = document.execCommand('copy');
+          const msg = successful ? 'successful' : 'unsuccessful';
+          console.log(`Fallback: Copying text command was ${msg}`);
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+        }
+        document.body.removeChild(textArea);
+      },
+      copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+          this.fallbackCopyTextToClipboard(text);
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+          console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      },
+
       openMenu() {
         this.ui.menu = this.ui.menu.length ? '' : 'open';
       },
