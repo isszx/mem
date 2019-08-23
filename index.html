@@ -498,6 +498,18 @@
       }
     }
   }
+  .noto {
+    position: fixed;
+    z-index: 15;
+    bottom: 5px;
+    left: 5px;
+    background-color: #000;
+    color: #9F0;
+    font-size: 8px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #9f0;
+  }
   </style>
 </head>
 <body>
@@ -513,7 +525,7 @@
       <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
     </section>
     <nav :class="ui.menu">
-      <header>Memory v0.0.4</header>
+      <header>Memory v0.0.5</header>
       <button :class="calcClass('an')" @click="load('an')">
         <span>An</span>
         <small>13/04/17 2:15am</small>
@@ -559,6 +571,9 @@
         </template>
       </div>
     </section>
+    <aside class="noto" v-if="noto.length">
+      <span>{{ noto }}</span>
+    </aside>
   </section>
   <script>
   const app5 = new Vue({
@@ -581,16 +596,29 @@
       search: '',
 
       time: null,
+      noto: '',
     },
     mounted() {},
     methods: {
-      openSong(item) {
-        this.copyTextToClipboard(item);
-        if (window.open) {
-          window.open(this.hrefMake(item), '_blank');
+      showNoto(text, cb) {
+        if (text.length === 0) {
+          cb();
+          return;
         }
+        this.noto = text;
+        setTimeout(() => {
+          this.noto = '';
+          cb();
+        }, 2000);
       },
-      fallbackCopyTextToClipboard(text) {
+      openSong(item) {
+        this.copyTextToClipboard(item, this.showNoto, () => {
+          if (window.open) {
+            window.open(this.hrefMake(item), '_blank');
+          }
+        });
+      },
+      fallbackCopyTextToClipboard(text, cb, cbb) {
         const textArea = document.createElement("textarea");
         textArea.value = text;
         document.body.appendChild(textArea);
@@ -600,20 +628,24 @@
           const successful = document.execCommand('copy');
           const msg = successful ? 'successful' : 'unsuccessful';
           console.log(`Fallback: Copying text command was ${msg}`);
+          cb(`Fallback: Copying text command was ${msg}`, cbb);
         } catch (err) {
           console.error('Fallback: Oops, unable to copy', err);
+          cb('Fallback: Oops, unable to copy', cbb);
         }
         document.body.removeChild(textArea);
       },
-      copyTextToClipboard(text) {
+      copyTextToClipboard(text, cb, cbb) {
         if (!navigator.clipboard) {
-          this.fallbackCopyTextToClipboard(text);
+          this.fallbackCopyTextToClipboard(text, cb, cbb);
           return;
         }
         navigator.clipboard.writeText(text).then(function() {
           console.log('Async: Copying to clipboard was successful!');
+          cb('Async: Copying to clipboard was successful!', cbb);
         }, function(err) {
           console.error('Async: Could not copy text: ', err);
+          cb('Async: Could not copy text', cbb);
         });
       },
 
