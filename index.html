@@ -94,40 +94,7 @@
   .prev:hover, .next:hover {
     color: #9f0;
   }
-  .btn {
-    font-family: 'Press Start 2P', monospace, "Consolas";
-    min-height: 35px;
-    max-height: 35px;
-    appearance: none;
-    cursor: pointer;
-    user-select: none;
-    text-decoration: none;
-    background-color: #131313;
-    color: #9F0;
-    border: 1px solid #9f0;
-    padding: 0 15px;
-    border-radius: 2px;
-    font-size: 10px;
-    transition: all .5s ease;
-    outline: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  .btn:hover {
-    color: rgba(153, 255, 0, 0.25);
-    border-color: rgba(153, 255, 0, 0.25);
-  }
-  .btn.active {
-    color: rgba(153, 255, 0, 0.25);
-    border-color: rgba(153, 255, 0, 0.25);
-  }
-  .btn small {
-    font-size: 50%;
-    margin-top: 5px;
-  }
-  .filter {
+  input {
     min-height: 35px;
     max-height: 35px;
     padding: 0 15px;
@@ -147,28 +114,406 @@
     flex-direction: column;
     position: relative;
   }
-  nav {
-    padding: 10px 0 0 0;
-    font-size: 0;
-    display: flex;
-    flex-direction: row;
-  }
-  .nav__item {
-    margin: 0 5px;
-  }
   .empty {
-    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* word-wrap: none; */
+    text-align: center;
+    font-size: 20px;
+    line-height: 28px;
     color: #e5e5e5;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
   }
+  .empty span {
+    max-width: 90vw;
+    overflow-wrap: break-word;
+  }
+  .search {
+    margin: 10px 5px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+  }
+  .search .input {
+    width: 100%;
+    border-right: none;
+    padding-right: 35px;
+  }
+  .search .input:disabled {
+    opacity: 0.1;
+  }
+  .disabled {
+    opacity: 0.1 !important;
+  }
+  .search-btn, .search-clear {
+    user-select: none;
+    cursor: pointer;
+    min-height: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    max-width: 35px;
+    margin-left: -1px;
+    display: flex;
+    background-position: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    transition: all .5s ease;
+  }
+  .search-clear {
+    position: absolute;
+    right: 35px;
+    top: 0;
+    bottom: 0;
+    background-image: url(static/close.svg);
+  }
+  .search-btn {
+    border: 1px solid #9f0;
+    background-image: url(static/search.svg);
+  }
+  .search-btn:hover {
+    background-color: rgba(153, 255, 0, 0.25);
+  }
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: rgba(153, 255, 0, 0.25);
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: rgba(153, 255, 0, 0.25);
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+    color: rgba(153, 255, 0, 0.25);
+  }
+  :-moz-placeholder { /* Firefox 18- */
+    color: rgba(153, 255, 0, 0.25);
+  }
+  ::placeholder {
+    color: rgba(153, 255, 0, 0.25);
+  }
+  /* nav-icon */
+  .nav-icon{
+    width: 40px;
+    height: 20px;
+    margin: 0 15px 0 0;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+  }
+  .nav-icon span{
+    background-color:#9F0;
+    position: absolute;
+    border-radius: 0;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+  }
+  .nav-icon span:nth-child(1){
+    width: 100%;
+    height:  2px;
+    display: block;
+    top: 0px;
+    left: 0px;
+  }
+  .nav-icon span:nth-child(2){
+    width: 100%;
+    height:  2px;
+    display: block;
+    top: 9px;
+    left: 0px;
+  }
+  .nav-icon span:nth-child(3){
+    width: 100%;
+    height:  2px;
+    display: block;
+    bottom: 0px;
+    left: 0px;
+  }
+  .nav-icon:not(.open):hover span:nth-child(1){
+    width: 100%;
+    height:  2px;
+    display: block;
+    top: -4px;
+    left: 0px;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+  }
+  .nav-icon:not(.open):hover span:nth-child(2){
+    width: 120%;
+    height:  2px;
+    display: block;
+    top: 9px;
+    left: -10%;
+    transition: .4s cubic-bezier(.8, .5, .2, 1.4);
+  }
+  .nav-icon:not(.open):hover span:nth-child(3){
+    width: 100%;
+    height:  2px;
+    display: block;
+    bottom: -4px;
+    left: 0px;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+  }
+  .nav-icon.open {
+    transform: rotate(-90deg);
+  }
+  .nav-icon.open  span:nth-child(1){
+    left:3px;
+    top: 9px;
+    width: 30px;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    transform: rotate(90deg);
+    transition-delay: 150ms;
+  }
+  .nav-icon.open  span:nth-child(2){
+    left:0;
+    top: 20px;
+    width: 20px;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    transform: rotate(45deg);
+    transition-delay: 50ms;
+  }
+  .nav-icon.open  span:nth-child(3){
+    left:16px;
+    top: 20px;
+    width: 20px;
+    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    transform: rotate(-45deg);
+    transition-delay: 100ms;
+  }
+
+  @media screen and (min-width: 788px) {
+    nav {
+      padding: 10px 0 0 0;
+      font-size: 0;
+      display: flex;
+      flex-direction: row;
+    }
+    .nav__item {
+      margin: 0 5px;
+    }
+    nav .btn {
+      font-family: 'Press Start 2P', monospace, "Consolas";
+      min-height: 35px;
+      max-height: 35px;
+      appearance: none;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      background-color: #131313;
+      color: #9F0;
+      border: 1px solid #9f0;
+      padding: 0 15px;
+      border-radius: 2px;
+      font-size: 10px;
+      transition: all .5s ease;
+      outline: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    nav .btn:disabled {
+      opacity: 0.05;
+    }
+    nav .btn:hover {
+      color: rgba(153, 255, 0, 0.25);
+      border-color: rgba(153, 255, 0, 0.25);
+    }
+    nav .btn.active {
+      color: rgba(153, 255, 0, 0.25);
+      border-color: rgba(153, 255, 0, 0.25);
+    }
+    nav .btn small {
+      font-size: 50%;
+      margin-top: 5px;
+    }
+    .nav-icon {
+      margin-left: -52px;
+    }
+  }
+  .closer {
+    cursor: pointer;
+    user-select: none;
+    display: none;
+  }
+  @media screen and (max-width: 788px) {
+    .closer.open {
+      display: block;
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -10%;
+      width: 10%;
+      z-index: 11;
+    }
+    nav {
+      box-shadow: 0 0 25px 0 rgba(255, 0, 140, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #252525;
+      width: 0;
+      max-width: 90%;
+      /* overflow: hidden; */
+      transition: width .5s ease;
+      z-index: 10;
+    }
+    nav header {
+      font-size: 20px;
+      font-weight: 100;
+      color: #fff;
+      background-color: #ffffff0a;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 50px;
+      max-height: 50px;
+      min-height: 50px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    nav.open {
+      width: 90%;
+    }
+    nav button {
+      font-family: 'Press Start 2P', monospace, "Consolas";
+      font-size: 12px;
+      text-decoration: none;
+      -webkit-user-select: none;
+        -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 15px 50px;
+      transition: all .5s ease-in-out;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav button:disabled {
+      opacity: 0.1;
+    }
+    nav button > span {
+      color: #e5e5e5;
+      transition: all .5s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      width: 100%;
+    }
+    nav button > small {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 7px;
+      color: #e5e5e5;
+      width: 100%;
+      text-align: right;
+    }
+    nav button:before {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background-color: #ff00a7;
+      left: 0;
+      top: calc(50% - 1px);
+      z-index: 2;
+    }
+    nav button:after {
+      z-index: -1;
+      content: '';
+      position: absolute;
+      display: flex;
+      bottom: 0;
+      background-color: #ff00a790;
+      height: 1px;
+      left: 0;
+      right: 0;
+      transition: border-radius .8s ease, background-color 1s ease, height .5s ease;
+      border-radius: 100% 100% 0 0;
+    }
+    nav button:hover:not(:disabled), nav button:focus {
+      outline: none;
+    }
+    nav button:hover:not(:disabled) span, nav button:focus:not(:disabled) span {
+      color: #ff00a7;
+    }
+    nav button:hover:not(:disabled):before, nav button:focus:not(:disabled):before {
+      -webkit-animation: boww 2s ease;
+              buttonnimation: boww 2s ease;
+      width: 80vw;
+      left: 5vw;
+    }
+    nav button:hover:not(:disabled):after, nav button:focus:not(:disabled):after {
+      height: 100%;
+      background-color: #000;
+      border-radius: 0 0 0 0;
+    }
+
+    @-webkit-keyframes boww {
+      0% {
+        width: 0;
+        left: 0;
+      }
+      50% {
+        width: 80vw;
+      }
+      75% {
+        left: 5vw;
+      }
+      100% {
+        left: 5vw;
+      }
+    }
+
+    @keyframes boww {
+      0% {
+        width: 0;
+        left: 0;
+      }
+      50% {
+        width: 80vw;
+      }
+      75% {
+        left: 5vw;
+      }
+      100% {
+        left: 5vw;
+      }
+    }
+  }
   </style>
 </head>
 <body>
   <section id="app">
-    <nav>
+    <section class="search">
+      <div class="icon nav-icon" @click="openMenu" :class="ui.menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <input :readonly="page.length === 0" :disabled="page.length === 0" v-model="search" v-on:keyup.enter="find" type="text" class="input" placeholder="search...">
+      <div v-if="search.length !== 0" @click="cls" class="search-clear"></div>
+      <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
+    </section>
+    <nav :class="ui.menu">
+      <header>Memory v0.0.3</header>
       <button :class="calcClass('an')" @click="load('an')">
         <span>An</span>
         <small>13/04/17 2:15am</small>
@@ -185,10 +530,14 @@
         <span>Ma</span>
         <small>13/04/17 11:39pm</small>
       </button>
-      <button class="nav__item btn" @click="clear">clear</button>
+      <button :disabled="!backup.length" class="nav__item btn" @click="clear">
+        <span>reset all</span>
+      </button>
+      <span class="closer" :class="ui.menu" @click="openMenu"></span>
     </nav>
     <section class="audio-list" v-if="page.length > 0">
       <div class="column">
+        <!-- <a class="link" @click.prevent="testSearch(item)" v-for="(item, index) in page" target="_blank" v-bind:href="hrefMake(item)"> -->
         <a class="link" v-for="(item, index) in page" target="_blank" v-bind:href="hrefMake(item)">
           <span>{{ index + 1 + current }} - {{ item }}</span>
         </a>
@@ -201,7 +550,13 @@
     </section>
     <section v-else class="audio-list">
       <div class="empty">
-        <span>Select data archive</span>
+        <template v-if="notFoundMsg.length">
+          <span>{{ notFound }}</span>
+          <span>{{ notFoundMsg }}</span>
+        </template>
+        <template v-else>
+          <span>{{ msg }}</span>
+        </template>
       </div>
     </section>
   </section>
@@ -209,15 +564,76 @@
   const app5 = new Vue({
     el: '#app',
     data: {
-      message: 'Coming Soon',
+      ui: {
+        menu: '',
+      },
+      message: 'Select data archive',
+      notFound: 'Not found',
+      notFoundMsg: '',
+      msg: 'Select data archive',
+      backup: [],
       audio: [],
       page: [],
       current: 0,
       drop: 20,
       name: '',
+
+      search: '',
+
+      time: null,
     },
     mounted() {},
     methods: {
+      openMenu() {
+        this.ui.menu = this.ui.menu.length ? '' : 'open';
+      },
+      cls() {
+        if (this.time) {
+          clearTimeout(this.time);
+        }
+        const searchInput = document.querySelector('.search .input');
+        if (searchInput) {
+          searchInput.focus();
+        }
+
+        this.audio = this.backup;
+        this.search = '';
+        this.page = [];
+        this.current = 0;
+        this.loadPage();
+      },
+
+      find() {
+        if (!this.search.length) {
+          return;
+        }
+        this.search = this.search.trim();
+        const results = this.audio.filter(e => {
+          const fin = e.toLowerCase();
+          return Array.isArray(fin.match(this.search.toLowerCase()));
+        });
+        if (results.length === 0) {
+          this.notFoundMsg = `"${this.search}"`;
+          this.time = setTimeout(() => {
+            this.notFoundMsg = '';
+            this.cls();
+          }, 3000);
+        }
+        this.audio = results;
+        this.current = 0;
+        this.loadPage();
+      },
+
+      testSearch(name) {
+        // https://www.youtube.com/results?search_query=1231
+        // https://duckduckgo.com/?q=${name}&atb=v50-6_c&iax=videos&ia=videos
+        // https://api.duckduckgo.com/?q=DuckDuckGo&format=json&pretty=1
+        // https://mp3download.center/mp3/${name}
+        fetch(`https://api.song.link/v1-alpha.1/links?url=spotify%3Atrack%3A0Jcij1eWd5bDMU5iPbxe2i`)
+          .then(response => response.json())
+          .then(body => console.log(body));
+      },
+
       loadPage() {
         this.page = this.audio.slice(this.current, this.current + this.drop);
       },
@@ -235,6 +651,7 @@
       },
 
       load(name) {
+        this.backup = [];
         this.audio = [];
         this.page = [];
         this.current = 0;
@@ -246,7 +663,10 @@
             .then(body => body.audio)
             .then(audio => {
               this.audio = audio;
+              this.backup = audio;
               this.loadPage();
+
+              this.ui.menu = '';
             })
             .catch(err => console.error(err));
         }, 100);
@@ -264,6 +684,10 @@
         this.message = this.message.split('').reverse().join('')
       },
       clear() {
+        if (this.time) {
+          clearTimeout(this.time);
+        }
+        this.backup = [];
         this.audio = [];
         this.page = [];
         this.current = 0;
