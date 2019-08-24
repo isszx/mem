@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <script src="vue.min.js"></script>
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Memory</title>
+  <script src="vue.min.js"></script>
   <link href="//fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <style>
     * {
@@ -56,7 +56,8 @@
       text-decoration: none;
       line-height: 2;
       position: relative;
-      transition: all .25s ease;
+      -webkit-transition: all 250ms ease;
+      transition: all 250ms ease;
       display: inline-flex;
     }
 
@@ -77,7 +78,8 @@
       left: 0;
       right: 0;
       background-color: transparent;
-      transition: all .25s ease;
+      -webkit-transition: all 250ms ease;
+      transition: all 250ms ease;
       z-index: -1;
     }
 
@@ -101,9 +103,16 @@
     .next {
       user-select: none;
       cursor: pointer;
-      padding: 25px 15px;
+      /* padding: 25px 15px; */
+      width: 30px;
+      height: 30px;
+      margin: 0 20px;
+      background: no-repeat;
+      background-position: center;
+      background-size: 75%;
       color: #e5e5e5;
-      transition: all .25s ease;
+      -webkit-transition: all 500ms ease;
+      transition: all 500ms ease;
     }
 
     .prev.disabled,
@@ -114,6 +123,18 @@
     .prev:hover,
     .next:hover {
       color: #9f0;
+    }
+    .next {
+      background-image: url(static/left.svg);
+    }
+    .next:hover {
+      background-image: url(static/left_h.svg);
+    }
+    .prev {
+      background-image: url(static/right.svg);
+    }
+    .prev:hover {
+      background-image: url(static/right_h.svg);
     }
 
     input {
@@ -195,7 +216,8 @@
       background-position: center;
       background-size: 50%;
       background-repeat: no-repeat;
-      transition: all .5s ease;
+      -webkit-transition: all 500ms ease;
+      transition: all 500ms ease;
     }
 
     .search-clear {
@@ -247,14 +269,16 @@
       position: relative;
       cursor: pointer;
       display: inline-block;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
     }
 
     .nav-icon span {
       background-color: #9F0;
       position: absolute;
       border-radius: 0;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
     }
 
     .nav-icon span:nth-child(1) {
@@ -287,7 +311,8 @@
       display: block;
       top: -4px;
       left: 0px;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
     }
 
     .nav-icon:not(.open):hover span:nth-child(2) {
@@ -296,7 +321,8 @@
       display: block;
       top: 9px;
       left: -10%;
-      transition: .4s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 400ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 400ms cubic-bezier(.8, .5, .2, 1.4);
     }
 
     .nav-icon:not(.open):hover span:nth-child(3) {
@@ -305,7 +331,8 @@
       display: block;
       bottom: -4px;
       left: 0px;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
     }
 
     .nav-icon.open {
@@ -316,8 +343,10 @@
       left: 3px;
       top: 9px;
       width: 30px;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
       transform: rotate(90deg);
+      -webkit-transition-delay: 150ms;
       transition-delay: 150ms;
     }
 
@@ -325,8 +354,10 @@
       left: 0;
       top: 20px;
       width: 20px;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
       transform: rotate(45deg);
+      -webkit-transition-delay: 50ms;
       transition-delay: 50ms;
     }
 
@@ -334,8 +365,10 @@
       left: 16px;
       top: 20px;
       width: 20px;
-      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      -webkit-transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
+      transition: 300ms cubic-bezier(.8, .5, .2, 1.4);
       transform: rotate(-45deg);
+      -webkit-transition-delay: 100ms;
       transition-delay: 100ms;
     }
 
@@ -365,7 +398,8 @@
         padding: 0 15px;
         border-radius: 2px;
         font-size: 10px;
-        transition: all .5s ease;
+        -webkit-transition: all 500ms ease;
+        transition: all 500ms ease;
         outline: none;
         display: flex;
         justify-content: center;
@@ -426,7 +460,8 @@
         width: 0;
         max-width: 90%;
         /* overflow: hidden; */
-        transition: width .5s ease;
+        -webkit-transition: width 500ms ease;
+        transition: width 500ms ease;
         z-index: 10;
       }
 
@@ -464,7 +499,8 @@
         border: none;
         cursor: pointer;
         padding: 15px 50px;
-        transition: all .5s ease-in-out;
+        -webkit-transition: all 500ms ease-in-out;
+        transition: all 500ms ease-in-out;
         position: relative;
         z-index: 1;
         display: flex;
@@ -479,7 +515,8 @@
 
       nav button>span {
         color: #e5e5e5;
-        transition: all .5s ease;
+        -webkit-transition: all 500ms ease;
+        transition: all 500ms ease;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -519,7 +556,8 @@
         height: 1px;
         left: 0;
         right: 0;
-        transition: border-radius .8s ease, background-color 1s ease, height .5s ease;
+        -webkit-transition: border-radius 800ms ease, background-color 1000ms ease, height 500ms ease;
+        transition: border-radius 800ms ease, background-color 1000ms ease, height 500ms ease;
         border-radius: 100% 100% 0 0;
       }
 
@@ -535,8 +573,8 @@
 
       nav button:hover:not(:disabled):before,
       nav button:focus:not(:disabled):before {
-        -webkit-animation: boww 2s ease;
-        buttonnimation: boww 2s ease;
+        -webkit-animation: boww 2000ms ease;
+        buttonnimation: boww 2000ms ease;
         width: 80vw;
         left: 5vw;
       }
@@ -604,6 +642,7 @@
 
 <body>
   <section id="app">
+
     <section class="search">
       <div class="icon nav-icon" @click="openMenu" :class="ui.menu">
         <span></span>
@@ -615,41 +654,34 @@
       <div v-if="search.length !== 0" @click="cls" class="search-clear"></div>
       <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
     </section>
+
     <nav :class="ui.menu">
-      <header>Memory v0.0.8</header>
-      <button :class="calcClass('an')" @click="load('an')">
-        <span>An</span>
-        <small>13/04/17 2:15am</small>
-      </button>
-      <button :class="calcClass('vi')" @click="load('vi')">
-        <span>Vi</span>
-        <small>04/09/16 5:00am</small>
-      </button>
-      <button :class="calcClass('ar')" @click="load('ar')">
-        <span>Ar</span>
-        <small>13/04/17 11:29pm</small>
-      </button>
-      <button :class="calcClass('ma')" @click="load('ma')">
-        <span>Ma</span>
-        <small>13/04/17 11:39pm</small>
-      </button>
-      <button :disabled="!backup.length" class="nav__item btn" @click="clear">
+      <header>{{ appName }}</header>
+      <template v-for="(arh, index) in arch">
+        <button :class="calcClass(arh.name)" @click="load(arh.name)">
+          <span>{{ arh.name }}</span>
+          <small>{{ arh.dateStr }}</small>
+        </button>
+      </template>
+      <button v-if="arch.length" :disabled="!backup.length" class="nav__item btn" @click="clear">
         <span>reset all</span>
       </button>
       <span class="closer" :class="ui.menu" @click="openMenu"></span>
     </nav>
+
     <section class="audio-list" v-if="page.length > 0">
       <div class="column">
-        <!-- <a class="link" @click.prevent="testSearch(item)" v-for="(item, index) in page" target="_blank" v-bind:href="hrefMake(item)"> -->
-        <a class="link" v-for="(item, index) in page" @click="openSong(item)">
-          <span>{{ index + 1 + current }} - {{ item }}</span>
-        </a>
+        <template v-for="(item, index) in page">
+          <a class="link" @click="openSong(item)">
+            <span>{{ index + 1 + current }} - {{ item }}</span>
+          </a>
+        </template>
       </div>
       <div class="controls">
-        <span class="prev" @click="prevPage" :class="{ 'disabled': current === 0}"> ◀︎︎︎︎︎︎︎◀︎︎︎︎︎︎ </span>
+        <span class="prev" @click="prevPage" :class="{ 'disabled': current === 0}"></span>
         <span> {{ current / drop + 1 }} of {{ Math.ceil(audio.length / drop) }} </span>
         <span class="next" @click="nextPage"
-          :class="{ 'disabled': Math.ceil(current / drop + 1) === Math.ceil(audio.length / drop) }"> ▶︎▶︎ </span>
+          :class="{ 'disabled': Math.ceil(current / drop + 1) === Math.ceil(audio.length / drop) }"></span>
       </div>
     </section>
     <section v-else class="audio-list">
@@ -663,14 +695,16 @@
         </template>
       </div>
     </section>
+
     <aside class="noto" v-if="noto.length">
       <span>{{ noto }}</span>
     </aside>
+
   </section>
   <script>
     window.Clipboard = (function (window, document, navigator) {
-      var textArea,
-        copy;
+      let textArea;
+      let copy;
       function isOS() {
         return navigator.userAgent.match(/ipad|iphone/i);
       }
@@ -680,8 +714,8 @@
         document.body.appendChild(textArea);
       }
       function selectText() {
-        var range,
-          selection;
+        let range;
+        let selection;
         if (isOS()) {
           range = document.createRange();
           range.selectNodeContents(textArea);
@@ -706,10 +740,17 @@
         copy: copy
       };
     })(window, document, navigator);
-
-    const app5 = new Vue({
+    // const appMemory =
+    new Vue({
       el: '#app',
       data: {
+        arch: [
+          { name: 'an', dateStr: '13/04/17 2:15am', stamp: 0 },
+          { name: 'vi', dateStr: '04/09/16 5:00am', stamp: 0 },
+          { name: 'ar', dateStr: '13/04/17 9:29pm', stamp: 0 },
+          { name: 'ma', dateStr: '13/04/17 4:39pm', stamp: 0 },
+        ],
+        appName: 'Memory v0.0.9',
         ui: {
           menu: '',
         },
@@ -749,15 +790,7 @@
           }, 350);
         },
         copyTextToClipboard(text) {
-          if (!navigator.clipboard) {
-            window.Clipboard.copy(text);
-            return;
-          }
-          navigator.clipboard.writeText(text).then(function () {
-            console.log('Async: Copying to clipboard was successful!');
-          }, function (err) {
-            console.error('Async: Could not copy text: ', err);
-          });
+          window.Clipboard.copy(text);
         },
 
         openMenu() {
