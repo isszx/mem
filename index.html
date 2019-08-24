@@ -525,7 +525,7 @@
       <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
     </section>
     <nav :class="ui.menu">
-      <header>Memory v0.0.6</header>
+      <header>Memory v0.0.7</header>
       <button :class="calcClass('an')" @click="load('an')">
         <span>An</span>
         <small>13/04/17 2:15am</small>
@@ -618,25 +618,6 @@
           }
         });
       },
-      iosCopyToClipboard(el, cb, cbb) {
-        const oldContentEditable = el.contentEditable;
-        const oldReadOnly = el.readOnly;
-        const range = document.createRange();
-        el.contentEditable = true;
-        el.readOnly = false;
-        range.selectNodeContents(el);
-        const s = window.getSelection();
-        s.removeAllRanges();
-        s.addRange(range);
-        el.setSelectionRange(0, 999999); // A big number, to cover anything that could be inside the element.
-
-        el.contentEditable = oldContentEditable;
-        el.readOnly = oldReadOnly;
-
-        document.execCommand('copy');
-        cb('iso copying', cbb);
-        document.body.removeChild(el);
-      },
       fallbackCopyTextToClipboard(text, cb, cbb) {
         const textArea = document.createElement("textarea");
         textArea.value = text;
@@ -646,13 +627,6 @@
         try {
           const successful = document.execCommand('copy');
           const msg = successful ? 'successful' : 'unsuccessful';
-          if (!successful) {
-            const span = document.createElement('span');
-            span.innerText = text;
-            document.body.appendChild(span);
-            this.iosCopyToClipboard(span, cb, cbb);
-            return;
-          }
           console.log(`Fallback: Copying text command was ${msg}`);
           cb(`Fallback: Copying text command was ${msg}`, cbb);
         } catch (err) {
