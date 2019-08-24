@@ -8,510 +8,600 @@
   <title>Memory</title>
   <link href="//fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <style>
-  * {
-    padding: 0;
-    margin: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  :root {
-    color: #e5e5e5;
-    background-color: #131313;
-    font-family: 'Press Start 2P', monospace, "Consolas";
-    font-size: 100%;
-  }
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-  #app, body {
-    display: flex;
-    flex-direction: column;
-  }
-  p {
-    margin: 1rem;
-    font-size: 2.5rem;
-  }
-  .column {
-    display: flex;
-    flex-direction: column;
-    min-height: 500px;
-  }
-  a.link {
-    user-select: none;
-    cursor: pointer;
-    color: #e5e5e5;
-    text-decoration: none;
-    line-height: 2;
-    position: relative;
-    transition: all .25s ease;
-    display: inline-flex;
-  }
-  a.link span {
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 2.5%;
-  }
-  a.link:before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 0; right: 0;
-    background-color: transparent;
-    transition: all .25s ease;
-    z-index: -1;
-  }
-  a.link:hover {
-    color: #ff4c75;
-  }
-  a.link:hover:before {
-    background-color: #1e2a58;
-  }
-  .controls {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .prev, .next {
-    user-select: none;
-    cursor: pointer;
-    padding: 25px 15px;
-    color: #e5e5e5;
-    transition: all .25s ease;
-  }
-  .prev.disabled, .next.disabled {
-    opacity: .25;
-  }
-  .prev:hover, .next:hover {
-    color: #9f0;
-  }
-  input {
-    min-height: 35px;
-    max-height: 35px;
-    padding: 0 15px;
-    border: 1px solid #9f0;
-    border-radius: 2px;
-    appearance: none;
-    font-family: 'Press Start 2P', monospace, "Consolas";
-    background-color: #131313;
-    color: #9F0;
-    outline: none;
-  }
-  .audio-list {
-    padding: 25px 0 0 0;
-    min-height: 500px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-  .empty {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    /* word-wrap: none; */
-    text-align: center;
-    font-size: 20px;
-    line-height: 28px;
-    color: #e5e5e5;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-  }
-  .empty span {
-    max-width: 90vw;
-    overflow-wrap: break-word;
-  }
-  .search {
-    margin: 10px 5px 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-  }
-  .search .input {
-    width: 100%;
-    border-right: none;
-    padding-right: 35px;
-  }
-  .search .input:disabled {
-    opacity: 0.1;
-  }
-  .disabled {
-    opacity: 0.1 !important;
-  }
-  .search-btn, .search-clear {
-    user-select: none;
-    cursor: pointer;
-    min-height: 35px;
-    max-height: 35px;
-    min-width: 35px;
-    max-width: 35px;
-    margin-left: -1px;
-    display: flex;
-    background-position: center;
-    background-size: 50%;
-    background-repeat: no-repeat;
-    transition: all .5s ease;
-  }
-  .search-clear {
-    position: absolute;
-    right: 35px;
-    top: 0;
-    bottom: 0;
-    background-image: url(static/close.svg);
-  }
-  .search-btn {
-    border: 1px solid #9f0;
-    background-image: url(static/search.svg);
-  }
-  .search-btn:hover {
-    background-color: rgba(153, 255, 0, 0.25);
-  }
-  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: rgba(153, 255, 0, 0.25);
-  }
-  ::-moz-placeholder { /* Firefox 19+ */
-    color: rgba(153, 255, 0, 0.25);
-  }
-  :-ms-input-placeholder { /* IE 10+ */
-    color: rgba(153, 255, 0, 0.25);
-  }
-  :-moz-placeholder { /* Firefox 18- */
-    color: rgba(153, 255, 0, 0.25);
-  }
-  ::placeholder {
-    color: rgba(153, 255, 0, 0.25);
-  }
-  /* nav-icon */
-  .nav-icon{
-    width: 40px;
-    height: 20px;
-    margin: 0 15px 0 0;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-  }
-  .nav-icon span{
-    background-color:#9F0;
-    position: absolute;
-    border-radius: 0;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-  }
-  .nav-icon span:nth-child(1){
-    width: 100%;
-    height:  2px;
-    display: block;
-    top: 0px;
-    left: 0px;
-  }
-  .nav-icon span:nth-child(2){
-    width: 100%;
-    height:  2px;
-    display: block;
-    top: 9px;
-    left: 0px;
-  }
-  .nav-icon span:nth-child(3){
-    width: 100%;
-    height:  2px;
-    display: block;
-    bottom: 0px;
-    left: 0px;
-  }
-  .nav-icon:not(.open):hover span:nth-child(1){
-    width: 100%;
-    height:  2px;
-    display: block;
-    top: -4px;
-    left: 0px;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-  }
-  .nav-icon:not(.open):hover span:nth-child(2){
-    width: 120%;
-    height:  2px;
-    display: block;
-    top: 9px;
-    left: -10%;
-    transition: .4s cubic-bezier(.8, .5, .2, 1.4);
-  }
-  .nav-icon:not(.open):hover span:nth-child(3){
-    width: 100%;
-    height:  2px;
-    display: block;
-    bottom: -4px;
-    left: 0px;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-  }
-  .nav-icon.open {
-    transform: rotate(-90deg);
-  }
-  .nav-icon.open  span:nth-child(1){
-    left:3px;
-    top: 9px;
-    width: 30px;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-    transform: rotate(90deg);
-    transition-delay: 150ms;
-  }
-  .nav-icon.open  span:nth-child(2){
-    left:0;
-    top: 20px;
-    width: 20px;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-    transform: rotate(45deg);
-    transition-delay: 50ms;
-  }
-  .nav-icon.open  span:nth-child(3){
-    left:16px;
-    top: 20px;
-    width: 20px;
-    transition: .3s cubic-bezier(.8, .5, .2, 1.4);
-    transform: rotate(-45deg);
-    transition-delay: 100ms;
-  }
-
-  @media screen and (min-width: 788px) {
-    nav {
-      padding: 10px 0 0 0;
-      font-size: 0;
-      display: flex;
-      flex-direction: row;
-    }
-    .nav__item {
-      margin: 0 5px;
-    }
-    nav .btn {
-      font-family: 'Press Start 2P', monospace, "Consolas";
-      min-height: 35px;
-      max-height: 35px;
+    * {
+      padding: 0;
+      margin: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      -moz-appearance: none;
       appearance: none;
-      cursor: pointer;
-      user-select: none;
-      text-decoration: none;
+    }
+
+    :root {
+      color: #e5e5e5;
       background-color: #131313;
-      color: #9F0;
-      border: 1px solid #9f0;
-      padding: 0 15px;
-      border-radius: 2px;
-      font-size: 10px;
-      transition: all .5s ease;
-      outline: none;
+      font-family: 'Press Start 2P', monospace, "Consolas";
+      font-size: 100%;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+
+    #app,
+    body {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
     }
-    nav .btn:disabled {
-      opacity: 0.05;
+
+    p {
+      margin: 1rem;
+      font-size: 2.5rem;
     }
-    nav .btn:hover {
-      color: rgba(153, 255, 0, 0.25);
-      border-color: rgba(153, 255, 0, 0.25);
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
     }
-    nav .btn.active {
-      color: rgba(153, 255, 0, 0.25);
-      border-color: rgba(153, 255, 0, 0.25);
+
+    a.link {
+      user-select: none;
+      cursor: pointer;
+      color: #e5e5e5;
+      text-decoration: none;
+      line-height: 2;
+      position: relative;
+      transition: all .25s ease;
+      display: inline-flex;
     }
-    nav .btn small {
-      font-size: 50%;
-      margin-top: 5px;
+
+    a.link span {
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 2.5%;
     }
-    .nav-icon {
-      margin-left: -52px;
-    }
-  }
-  .closer {
-    cursor: pointer;
-    user-select: none;
-    display: none;
-  }
-  @media screen and (max-width: 788px) {
-    .closer.open {
+
+    a.link:before {
+      content: '';
       display: block;
       position: absolute;
-      top: 0; bottom: 0;
-      left: -10%;
-      width: 10%;
-      z-index: 11;
-    }
-    nav {
-      box-shadow: 0 0 25px 0 rgba(255, 0, 140, 0.1);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      right: 0;
       top: 0;
       bottom: 0;
-      background-color: #252525;
-      width: 0;
-      max-width: 90%;
-      /* overflow: hidden; */
-      transition: width .5s ease;
-      z-index: 10;
+      left: 0;
+      right: 0;
+      background-color: transparent;
+      transition: all .25s ease;
+      z-index: -1;
     }
-    nav header {
-      font-size: 20px;
-      font-weight: 100;
-      color: #fff;
-      background-color: #ffffff0a;
+
+    a.link:hover {
+      color: #ff4c75;
+    }
+
+    a.link:hover:before {
+      background-color: #1e2a58;
+    }
+
+    .controls {
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      height: 50px;
-      max-height: 50px;
-      min-height: 50px;
-      margin-bottom: 25px;
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
     }
-    nav.open {
-      width: 90%;
-    }
-    nav button {
-      font-family: 'Press Start 2P', monospace, "Consolas";
-      font-size: 12px;
-      text-decoration: none;
-      -webkit-user-select: none;
-        -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-      background-color: transparent;
-      border: none;
+
+    .prev,
+    .next {
+      user-select: none;
       cursor: pointer;
-      padding: 15px 50px;
-      transition: all .5s ease-in-out;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-    nav button:disabled {
-      opacity: 0.1;
-    }
-    nav button > span {
+      padding: 25px 15px;
       color: #e5e5e5;
-      transition: all .5s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: left;
-      width: 100%;
+      transition: all .25s ease;
     }
-    nav button > small {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 7px;
-      color: #e5e5e5;
-      width: 100%;
-      text-align: right;
+
+    .prev.disabled,
+    .next.disabled {
+      opacity: .25;
     }
-    nav button:before {
-      position: absolute;
-      content: '';
-      display: block;
-      width: 0;
-      height: 2px;
-      background-color: #ff00a7;
-      left: 0;
-      top: calc(50% - 1px);
-      z-index: 2;
+
+    .prev:hover,
+    .next:hover {
+      color: #9f0;
     }
-    nav button:after {
-      z-index: -1;
-      content: '';
-      position: absolute;
-      display: flex;
-      bottom: 0;
-      background-color: #ff00a790;
-      height: 1px;
-      left: 0;
-      right: 0;
-      transition: border-radius .8s ease, background-color 1s ease, height .5s ease;
-      border-radius: 100% 100% 0 0;
-    }
-    nav button:hover:not(:disabled), nav button:focus {
+
+    input {
+      min-height: 35px;
+      max-height: 35px;
+      padding: 0 15px;
+      border: 1px solid #9f0;
+      border-radius: 2px;
+      appearance: none;
+      font-family: 'Press Start 2P', monospace, "Consolas";
+      background-color: #131313;
+      color: #9F0;
       outline: none;
     }
-    nav button:hover:not(:disabled) span, nav button:focus:not(:disabled) span {
-      color: #ff00a7;
+
+    .audio-list {
+      padding: 25px 0 0 0;
+      min-height: 500px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
-    nav button:hover:not(:disabled):before, nav button:focus:not(:disabled):before {
-      -webkit-animation: boww 2s ease;
-              buttonnimation: boww 2s ease;
-      width: 80vw;
-      left: 5vw;
+
+    .empty {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      /* word-wrap: none; */
+      text-align: center;
+      font-size: 20px;
+      line-height: 28px;
+      color: #e5e5e5;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      position: absolute;
     }
-    nav button:hover:not(:disabled):after, nav button:focus:not(:disabled):after {
-      height: 100%;
+
+    .empty span {
+      max-width: 90vw;
+      overflow-wrap: break-word;
+    }
+
+    .search {
+      margin: 10px 5px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+    }
+
+    .search .input {
+      width: 100%;
+      border-right: none;
+      padding-right: 35px;
+    }
+
+    .search .input:disabled {
+      opacity: 0.1;
+    }
+
+    .disabled {
+      opacity: 0.1 !important;
+    }
+
+    .search-btn,
+    .search-clear {
+      user-select: none;
+      cursor: pointer;
+      min-height: 35px;
+      max-height: 35px;
+      min-width: 35px;
+      max-width: 35px;
+      margin-left: -1px;
+      display: flex;
+      background-position: center;
+      background-size: 50%;
+      background-repeat: no-repeat;
+      transition: all .5s ease;
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 35px;
+      top: 0;
+      bottom: 0;
+      background-image: url(static/close.svg);
+    }
+
+    .search-btn {
+      border: 1px solid #9f0;
+      background-image: url(static/search.svg);
+    }
+
+    .search-btn:hover {
+      background-color: rgba(153, 255, 0, 0.25);
+    }
+
+    ::-webkit-input-placeholder {
+      /* Chrome/Opera/Safari */
+      color: rgba(153, 255, 0, 0.25);
+    }
+
+    ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: rgba(153, 255, 0, 0.25);
+    }
+
+    :-ms-input-placeholder {
+      /* IE 10+ */
+      color: rgba(153, 255, 0, 0.25);
+    }
+
+    :-moz-placeholder {
+      /* Firefox 18- */
+      color: rgba(153, 255, 0, 0.25);
+    }
+
+    ::placeholder {
+      color: rgba(153, 255, 0, 0.25);
+    }
+
+    /* nav-icon */
+    .nav-icon {
+      width: 40px;
+      height: 20px;
+      margin: 0 15px 0 0;
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .nav-icon span {
+      background-color: #9F0;
+      position: absolute;
+      border-radius: 0;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .nav-icon span:nth-child(1) {
+      width: 100%;
+      height: 2px;
+      display: block;
+      top: 0px;
+      left: 0px;
+    }
+
+    .nav-icon span:nth-child(2) {
+      width: 100%;
+      height: 2px;
+      display: block;
+      top: 9px;
+      left: 0px;
+    }
+
+    .nav-icon span:nth-child(3) {
+      width: 100%;
+      height: 2px;
+      display: block;
+      bottom: 0px;
+      left: 0px;
+    }
+
+    .nav-icon:not(.open):hover span:nth-child(1) {
+      width: 100%;
+      height: 2px;
+      display: block;
+      top: -4px;
+      left: 0px;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .nav-icon:not(.open):hover span:nth-child(2) {
+      width: 120%;
+      height: 2px;
+      display: block;
+      top: 9px;
+      left: -10%;
+      transition: .4s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .nav-icon:not(.open):hover span:nth-child(3) {
+      width: 100%;
+      height: 2px;
+      display: block;
+      bottom: -4px;
+      left: 0px;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .nav-icon.open {
+      transform: rotate(-90deg);
+    }
+
+    .nav-icon.open span:nth-child(1) {
+      left: 3px;
+      top: 9px;
+      width: 30px;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      transform: rotate(90deg);
+      transition-delay: 150ms;
+    }
+
+    .nav-icon.open span:nth-child(2) {
+      left: 0;
+      top: 20px;
+      width: 20px;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      transform: rotate(45deg);
+      transition-delay: 50ms;
+    }
+
+    .nav-icon.open span:nth-child(3) {
+      left: 16px;
+      top: 20px;
+      width: 20px;
+      transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+      transform: rotate(-45deg);
+      transition-delay: 100ms;
+    }
+
+    @media screen and (min-width: 788px) {
+      nav {
+        padding: 10px 0 0 0;
+        font-size: 0;
+        display: flex;
+        flex-direction: row;
+      }
+
+      .nav__item {
+        margin: 0 5px;
+      }
+
+      nav .btn {
+        font-family: 'Press Start 2P', monospace, "Consolas";
+        min-height: 35px;
+        max-height: 35px;
+        appearance: none;
+        cursor: pointer;
+        user-select: none;
+        text-decoration: none;
+        background-color: #131313;
+        color: #9F0;
+        border: 1px solid #9f0;
+        padding: 0 15px;
+        border-radius: 2px;
+        font-size: 10px;
+        transition: all .5s ease;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      nav .btn:disabled {
+        opacity: 0.05;
+      }
+
+      nav .btn:hover {
+        color: rgba(153, 255, 0, 0.25);
+        border-color: rgba(153, 255, 0, 0.25);
+      }
+
+      nav .btn.active {
+        color: rgba(153, 255, 0, 0.25);
+        border-color: rgba(153, 255, 0, 0.25);
+      }
+
+      nav .btn small {
+        font-size: 50%;
+        margin-top: 5px;
+      }
+
+      .nav-icon {
+        margin-left: -52px;
+      }
+    }
+
+    .closer {
+      cursor: pointer;
+      user-select: none;
+      display: none;
+    }
+
+    @media screen and (max-width: 788px) {
+      .closer.open {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -10%;
+        width: 10%;
+        z-index: 11;
+      }
+
+      nav {
+        box-shadow: 0 0 25px 0 rgba(255, 0, 140, 0.1);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: #252525;
+        width: 0;
+        max-width: 90%;
+        /* overflow: hidden; */
+        transition: width .5s ease;
+        z-index: 10;
+      }
+
+      nav header {
+        font-size: 20px;
+        font-weight: 100;
+        color: #fff;
+        background-color: #ffffff0a;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 50px;
+        max-height: 50px;
+        min-height: 50px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      nav.open {
+        width: 90%;
+      }
+
+      nav button {
+        font-family: 'Press Start 2P', monospace, "Consolas";
+        font-size: 12px;
+        text-decoration: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 15px 50px;
+        transition: all .5s ease-in-out;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav button:disabled {
+        opacity: 0.1;
+      }
+
+      nav button>span {
+        color: #e5e5e5;
+        transition: all .5s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+        width: 100%;
+      }
+
+      nav button>small {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 7px;
+        color: #e5e5e5;
+        width: 100%;
+        text-align: right;
+      }
+
+      nav button:before {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 0;
+        height: 2px;
+        background-color: #ff00a7;
+        left: 0;
+        top: calc(50% - 1px);
+        z-index: 2;
+      }
+
+      nav button:after {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        display: flex;
+        bottom: 0;
+        background-color: #ff00a790;
+        height: 1px;
+        left: 0;
+        right: 0;
+        transition: border-radius .8s ease, background-color 1s ease, height .5s ease;
+        border-radius: 100% 100% 0 0;
+      }
+
+      nav button:hover:not(:disabled),
+      nav button:focus {
+        outline: none;
+      }
+
+      nav button:hover:not(:disabled) span,
+      nav button:focus:not(:disabled) span {
+        color: #ff00a7;
+      }
+
+      nav button:hover:not(:disabled):before,
+      nav button:focus:not(:disabled):before {
+        -webkit-animation: boww 2s ease;
+        buttonnimation: boww 2s ease;
+        width: 80vw;
+        left: 5vw;
+      }
+
+      nav button:hover:not(:disabled):after,
+      nav button:focus:not(:disabled):after {
+        height: 100%;
+        background-color: #000;
+        border-radius: 0 0 0 0;
+      }
+
+      @-webkit-keyframes boww {
+        0% {
+          width: 0;
+          left: 0;
+        }
+
+        50% {
+          width: 80vw;
+        }
+
+        75% {
+          left: 5vw;
+        }
+
+        100% {
+          left: 5vw;
+        }
+      }
+
+      @keyframes boww {
+        0% {
+          width: 0;
+          left: 0;
+        }
+
+        50% {
+          width: 80vw;
+        }
+
+        75% {
+          left: 5vw;
+        }
+
+        100% {
+          left: 5vw;
+        }
+      }
+    }
+
+    .noto {
+      position: fixed;
+      z-index: 15;
+      bottom: 5px;
+      left: 5px;
       background-color: #000;
-      border-radius: 0 0 0 0;
+      color: #9F0;
+      font-size: 8px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: 1px solid #9f0;
     }
-
-    @-webkit-keyframes boww {
-      0% {
-        width: 0;
-        left: 0;
-      }
-      50% {
-        width: 80vw;
-      }
-      75% {
-        left: 5vw;
-      }
-      100% {
-        left: 5vw;
-      }
-    }
-
-    @keyframes boww {
-      0% {
-        width: 0;
-        left: 0;
-      }
-      50% {
-        width: 80vw;
-      }
-      75% {
-        left: 5vw;
-      }
-      100% {
-        left: 5vw;
-      }
-    }
-  }
-  .noto {
-    position: fixed;
-    z-index: 15;
-    bottom: 5px;
-    left: 5px;
-    background-color: #000;
-    color: #9F0;
-    font-size: 8px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid #9f0;
-  }
   </style>
 </head>
+
 <body>
   <section id="app">
     <section class="search">
@@ -520,12 +610,13 @@
         <span></span>
         <span></span>
       </div>
-      <input :readonly="page.length === 0" :disabled="page.length === 0" v-model="search" v-on:keyup.enter="find" type="text" class="input" placeholder="search...">
+      <input :readonly="page.length === 0" :disabled="page.length === 0" v-model="search" v-on:keyup.enter="find"
+        type="text" class="input" placeholder="search...">
       <div v-if="search.length !== 0" @click="cls" class="search-clear"></div>
       <div @click="find" class="search-btn" :class="{ 'disabled': page.length === 0}"></div>
     </section>
     <nav :class="ui.menu">
-      <header>Memory v0.0.7</header>
+      <header>Memory v0.0.8</header>
       <button :class="calcClass('an')" @click="load('an')">
         <span>An</span>
         <small>13/04/17 2:15am</small>
@@ -557,7 +648,8 @@
       <div class="controls">
         <span class="prev" @click="prevPage" :class="{ 'disabled': current === 0}"> ◀︎︎︎︎︎︎︎◀︎︎︎︎︎︎ </span>
         <span> {{ current / drop + 1 }} of {{ Math.ceil(audio.length / drop) }} </span>
-        <span class="next" @click="nextPage"  :class="{ 'disabled': Math.ceil(current / drop + 1) === Math.ceil(audio.length / drop) }"> ▶︎▶︎ </span>
+        <span class="next" @click="nextPage"
+          :class="{ 'disabled': Math.ceil(current / drop + 1) === Math.ceil(audio.length / drop) }"> ▶︎▶︎ </span>
       </div>
     </section>
     <section v-else class="audio-list">
@@ -576,190 +668,210 @@
     </aside>
   </section>
   <script>
-  const app5 = new Vue({
-    el: '#app',
-    data: {
-      ui: {
-        menu: '',
-      },
-      message: 'Select data archive',
-      notFound: 'Not found',
-      notFoundMsg: '',
-      msg: 'Select data archive',
-      backup: [],
-      audio: [],
-      page: [],
-      current: 0,
-      drop: 20,
-      name: '',
-
-      search: '',
-
-      time: null,
-      noto: '',
-    },
-    mounted() {},
-    methods: {
-      showNoto(text, cb) {
-        if (text.length === 0) {
-          cb();
-          return;
-        }
-        this.noto = text;
-        setTimeout(() => {
-          this.noto = '';
-          cb();
-        }, 2000);
-      },
-      openSong(item) {
-        this.copyTextToClipboard(item, this.showNoto, () => {
-          if (window.open) {
-            window.open(this.hrefMake(item), '_blank');
-          }
-        });
-      },
-      fallbackCopyTextToClipboard(text, cb, cbb) {
-        const textArea = document.createElement("textarea");
+    window.Clipboard = (function (window, document, navigator) {
+      var textArea,
+        copy;
+      function isOS() {
+        return navigator.userAgent.match(/ipad|iphone/i);
+      }
+      function createTextArea(text) {
+        textArea = document.createElement('textArea');
         textArea.value = text;
         document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-          const successful = document.execCommand('copy');
-          const msg = successful ? 'successful' : 'unsuccessful';
-          console.log(`Fallback: Copying text command was ${msg}`);
-          cb(`Fallback: Copying text command was ${msg}`, cbb);
-        } catch (err) {
-          console.error('Fallback: Oops, unable to copy', err);
-          cb('Fallback: Oops, unable to copy', cbb);
+      }
+      function selectText() {
+        var range,
+          selection;
+        if (isOS()) {
+          range = document.createRange();
+          range.selectNodeContents(textArea);
+          selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          textArea.setSelectionRange(0, 999999);
+        } else {
+          textArea.select();
         }
+      }
+      function copyToClipboard() {
+        document.execCommand('copy');
         document.body.removeChild(textArea);
-      },
-      copyTextToClipboard(text, cb, cbb) {
-        if (!navigator.clipboard) {
-          this.fallbackCopyTextToClipboard(text, cb, cbb);
-          return;
-        }
-        navigator.clipboard.writeText(text).then(function() {
-          console.log('Async: Copying to clipboard was successful!');
-          cb('Async: Copying to clipboard was successful!', cbb);
-        }, function(err) {
-          console.error('Async: Could not copy text: ', err);
-          cb('Async: Could not copy text', cbb);
-        });
-      },
+      }
+      copy = function (text) {
+        createTextArea(text);
+        selectText();
+        copyToClipboard();
+      };
+      return {
+        copy: copy
+      };
+    })(window, document, navigator);
 
-      openMenu() {
-        this.ui.menu = this.ui.menu.length ? '' : 'open';
-      },
-      cls() {
-        if (this.time) {
-          clearTimeout(this.time);
-        }
-        const searchInput = document.querySelector('.search .input');
-        if (searchInput) {
-          searchInput.focus();
-        }
+    const app5 = new Vue({
+      el: '#app',
+      data: {
+        ui: {
+          menu: '',
+        },
+        message: 'Select data archive',
+        notFound: 'Not found',
+        notFoundMsg: '',
+        msg: 'Select data archive',
+        backup: [],
+        audio: [],
+        page: [],
+        current: 0,
+        drop: 20,
+        name: '',
 
-        this.audio = this.backup;
-        this.search = '';
-        this.page = [];
-        this.current = 0;
-        this.loadPage();
-      },
+        search: '',
 
-      find() {
-        if (!this.search.length) {
-          return;
-        }
-        this.search = this.search.trim();
-        const results = this.audio.filter(e => {
-          const fin = e.toLowerCase();
-          return Array.isArray(fin.match(this.search.toLowerCase()));
-        });
-        if (results.length === 0) {
-          this.notFoundMsg = `"${this.search}"`;
-          this.time = setTimeout(() => {
-            this.notFoundMsg = '';
-            this.cls();
-          }, 3000);
-        }
-        this.audio = results;
-        this.current = 0;
-        this.loadPage();
+        time: null,
+        noto: '',
       },
+      mounted() { },
+      methods: {
+        showNoto(text) {
+          if (text.length === 0) {
+            return;
+          }
+          this.noto = text;
+          setTimeout(() => {
+            this.noto = '';
+          }, 2000);
+        },
+        openSong(item) {
+          this.copyTextToClipboard(item, this.showNoto);
+          setTimeout(() => {
+            if (window.open) {
+              window.open(this.hrefMake(item), '_blank');
+            }
+          }, 350);
+        },
+        copyTextToClipboard(text) {
+          if (!navigator.clipboard) {
+            window.Clipboard.copy(text);
+            return;
+          }
+          navigator.clipboard.writeText(text).then(function () {
+            console.log('Async: Copying to clipboard was successful!');
+          }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+          });
+        },
 
-      testSearch(name) {
-        // https://www.youtube.com/results?search_query=1231
-        // https://duckduckgo.com/?q=${name}&atb=v50-6_c&iax=videos&ia=videos
-        // https://api.duckduckgo.com/?q=DuckDuckGo&format=json&pretty=1
-        // https://mp3download.center/mp3/${name}
-        fetch(`https://api.song.link/v1-alpha.1/links?url=spotify%3Atrack%3A0Jcij1eWd5bDMU5iPbxe2i`)
-          .then(response => response.json())
-          .then(body => console.log(body));
-      },
+        openMenu() {
+          this.ui.menu = this.ui.menu.length ? '' : 'open';
+        },
+        cls() {
+          if (this.time) {
+            clearTimeout(this.time);
+          }
+          const searchInput = document.querySelector('.search .input');
+          if (searchInput) {
+            searchInput.focus();
+          }
 
-      loadPage() {
-        this.page = this.audio.slice(this.current, this.current + this.drop);
-      },
-      prevPage() {
-        if (this.current !== 0) {
-          this.current -= this.drop;
+          this.audio = this.backup;
+          this.search = '';
+          this.page = [];
+          this.current = 0;
           this.loadPage();
-        }
-      },
-      nextPage() {
-        if (Math.ceil(this.current / this.drop + 1) !== Math.ceil(this.audio.length / this.drop)) {
-          this.current += this.drop;
+        },
+
+        find() {
+          if (!this.search.length) {
+            return;
+          }
+          this.search = this.search.trim();
+          const results = this.audio.filter(e => {
+            const fin = e.toLowerCase();
+            return Array.isArray(fin.match(this.search.toLowerCase()));
+          });
+          if (results.length === 0) {
+            this.notFoundMsg = `"${this.search}"`;
+            this.time = setTimeout(() => {
+              this.notFoundMsg = '';
+              this.cls();
+            }, 3000);
+          }
+          this.audio = results;
+          this.current = 0;
           this.loadPage();
-        }
-      },
+        },
 
-      load(name) {
-        this.backup = [];
-        this.audio = [];
-        this.page = [];
-        this.current = 0;
-        this.name = name;
-
-        setTimeout(() => {
-          fetch(`data/${name}.json`)
+        testSearch(name) {
+          // https://www.youtube.com/results?search_query=1231
+          // https://duckduckgo.com/?q=${name}&atb=v50-6_c&iax=videos&ia=videos
+          // https://api.duckduckgo.com/?q=DuckDuckGo&format=json&pretty=1
+          // https://mp3download.center/mp3/${name}
+          fetch(`https://api.song.link/v1-alpha.1/links?url=spotify%3Atrack%3A0Jcij1eWd5bDMU5iPbxe2i`)
             .then(response => response.json())
-            .then(body => body.audio)
-            .then(audio => {
-              this.audio = audio;
-              this.backup = audio;
-              this.loadPage();
+            .then(body => console.log(body));
+        },
 
-              this.ui.menu = '';
-            })
-            .catch(err => console.error(err));
-        }, 100);
-      },
-      hrefMake(item) {
-        return `//m.vk.com/audio?q=${item}&tab=global`;
-      },
-      calcClass(name) {
-        if (name === this.name) {
-          return 'nav__item btn active';
-        }
-        return 'nav__item btn';
-      },
-      reverseMessage() {
-        this.message = this.message.split('').reverse().join('')
-      },
-      clear() {
-        if (this.time) {
-          clearTimeout(this.time);
-        }
-        this.backup = [];
-        this.audio = [];
-        this.page = [];
-        this.current = 0;
-        this.name = '';
-      },
-    }
-  })
+        loadPage() {
+          this.page = this.audio.slice(this.current, this.current + this.drop);
+        },
+        prevPage() {
+          if (this.current !== 0) {
+            this.current -= this.drop;
+            this.loadPage();
+          }
+        },
+        nextPage() {
+          if (Math.ceil(this.current / this.drop + 1) !== Math.ceil(this.audio.length / this.drop)) {
+            this.current += this.drop;
+            this.loadPage();
+          }
+        },
+
+        load(name) {
+          this.backup = [];
+          this.audio = [];
+          this.page = [];
+          this.current = 0;
+          this.name = name;
+
+          setTimeout(() => {
+            fetch(`data/${name}.json`)
+              .then(response => response.json())
+              .then(body => body.audio)
+              .then(audio => {
+                this.audio = audio;
+                this.backup = audio;
+                this.loadPage();
+
+                this.ui.menu = '';
+              })
+              .catch(err => console.error(err));
+          }, 100);
+        },
+        hrefMake(item) {
+          return `//m.vk.com/audio?q=${item}&tab=global`;
+        },
+        calcClass(name) {
+          if (name === this.name) {
+            return 'nav__item btn active';
+          }
+          return 'nav__item btn';
+        },
+        reverseMessage() {
+          this.message = this.message.split('').reverse().join('')
+        },
+        clear() {
+          if (this.time) {
+            clearTimeout(this.time);
+          }
+          this.backup = [];
+          this.audio = [];
+          this.page = [];
+          this.current = 0;
+          this.name = '';
+        },
+      }
+    })
   </script>
 </body>
+
 </html>
