@@ -833,16 +833,6 @@
           this.loadPage();
         },
 
-        testSearch(name) {
-          // https://www.youtube.com/results?search_query=1231
-          // https://duckduckgo.com/?q=${name}&atb=v50-6_c&iax=videos&ia=videos
-          // https://api.duckduckgo.com/?q=DuckDuckGo&format=json&pretty=1
-          // https://mp3download.center/mp3/${name}
-          fetch(`https://api.song.link/v1-alpha.1/links?url=spotify%3Atrack%3A0Jcij1eWd5bDMU5iPbxe2i`)
-            .then(response => response.json())
-            .then(body => console.log(body));
-        },
-
         loadPage() {
           this.page = this.audio.slice(this.current, this.current + this.drop);
         },
