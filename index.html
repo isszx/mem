@@ -637,12 +637,82 @@
       border-radius: 4px;
       border: 1px solid #9f0;
     }
+    .help {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 80%;
+      padding: 10px 20px;
+      border-radius: 4px;
+      border: 1px solid #9f0;
+      font-size: 11px;
+      font-weight: 100;
+      position: absolute;
+      background-color: #000;
+      bottom: 2%;
+      left: 2%;
+      transform: translateX(-200%);
+      transition: all 1.5s ease;
+    }
+    .help.show {
+      transform: translateX(0)
+    }
+    .help .q {
+      margin-bottom: 10px;
+      color: #f99;
+    }
+    .help .a {
+      color: #99f;
+      line-height: 1.5;
+    }
+    .help hr {
+      color: #fff;
+      background-color: #fff;
+      height: 1px;
+      width: 100%;
+      margin: 15px 0;
+      opacity: .5;
+    }
+    .help__close {
+      cursor: pointer;
+      user-select: none;
+      color: #fff;
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 8px;
+      border: 1px solid #9f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 1;
+      height: 20px;
+      font-weight: 100;
+      padding: 0 10px;
+      background-color: #000;
+      transform: translate(10px, -10px);
+      border-radius: 3px;
+      transition: all .25s ease;
+    }
+    .help__close:hover {
+      height: 40px;
+      font-size: 14px;
+    }
+    .hidden {
+      display: none;
+    }
+    .app-name {
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
   </style>
 </head>
 
 <body>
-  <section id="app">
-
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <section id="app" class="hidden">
     <section class="search">
       <div class="icon nav-icon" @click="openMenu" :class="ui.menu">
         <span></span>
@@ -700,6 +770,15 @@
       <span>{{ noto }}</span>
     </aside>
 
+    <aside class="help" :class="{ 'show': help }" @click="closeHelp">
+      <span class="help__close">close (x)</span>
+      <span class="app-name">App name: {{ appName }}</span>
+      <span class="q">Q: What is it?</span>
+      <span class="a">A: This is a project that stores particles from people's memory. Mostly music. Select the archive using the button at the top of the screen or in the side menu if the screen size is smaller than the computer screen. After downloading data from a remote server. You can use the search. And if you want, by clicking on the song you like, you will be taken to vk.com social network with a search query for the song you have selected.</span>
+      <hr>
+      <span class="q">Q: How does it work on devices with the VK app?</span>
+      <span class="a">A: The song name is sent to your clipboard, and the VK application opens on the music tab, then you can paste the song name into the search bar and find the song on the social network.</span>
+    </aside>
   </section>
   <script>
     window.Clipboard = (function (window, document, navigator) {
@@ -750,7 +829,7 @@
           { name: 'ar', dateStr: '13/04/17 9:29pm', stamp: 0 },
           { name: 'ma', dateStr: '13/04/17 4:39pm', stamp: 0 },
         ],
-        appName: 'Memory v0.0.9',
+        appName: 'Memory v0.0.10',
         ui: {
           menu: '',
         },
@@ -769,9 +848,25 @@
 
         time: null,
         noto: '',
+
+        help: false,
       },
-      mounted() { },
+      beforeCreate() {
+        document.querySelector('#app').classList.remove('hidden');
+      },
+      mounted() {
+        const help = localStorage.getItem('help');
+        if (!help || help !== 'close') {
+          setTimeout(() => {
+            this.help = true;
+          }, 1500);
+        }
+      },
       methods: {
+        closeHelp() {
+          localStorage.setItem('help', 'close');
+          this.help = false;
+        },
         showNoto(text) {
           if (text.length === 0) {
             return;
