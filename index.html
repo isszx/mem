@@ -817,6 +817,10 @@
     <aside class="help" :class="{ 'show': help }" @click="closeHelp">
       <span class="help__close">close (x)</span>
       <span class="app-name">App name: {{ appName }}</span>
+      <span class="q">Q: Shortcuts?</span>
+      <span class="a">A: "Left Arrow" - previous page.</span>
+      <span class="a">A: "Right Arrow" - next page.</span>
+      <hr>
       <span class="q">Q: What is it?</span>
       <span class="a">A: This is a project that stores particles from people's memory. Mostly music. Select the archive using the button at the top of the screen or in the side menu if the screen size is smaller than the computer screen. After downloading data from a remote server. You can use the search. And if you want, by clicking on the song you like, you will be taken to vk.com social network with a search query for the song you have selected.</span>
       <hr>
@@ -873,7 +877,7 @@
           { name: 'ar', dateStr: '13/04/17 9:29pm', stamp: 0 },
           { name: 'ma', dateStr: '13/04/17 4:39pm', stamp: 0 },
         ],
-        appName: 'Memory v0.0.10',
+        appName: 'Memory v0.0.11',
         ui: {
           menu: '',
         },
@@ -899,6 +903,16 @@
         document.querySelector('#app').classList.remove('hidden');
       },
       mounted() {
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight' || e.code === 'ArrowRight' || e.keyCode === 39) {
+            this.nextPage();
+            return;
+          }
+          if (e.key === 'ArrowLeft' || e.code === 'ArrowLeft' || e.keyCode === 37) {
+            this.prevPage();
+            return;
+          }
+        }, false);
         const help = localStorage.getItem('help');
         if (!help || help !== 'close') {
           setTimeout(() => {
